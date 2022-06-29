@@ -1,0 +1,37 @@
+{
+    "name": "tryitonline",
+    "version": "1.0.0",
+    "description": "",
+    "homepage": "https://github.com/apteryxxyz/tryitonline",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "packageManager": "yarn@3.2.1",
+    "files": [
+        "dist"
+    ],
+    "author": {
+        "name": "ApteryxXYZ",
+        "url": "https://apteryx.xyz"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/apteryxxyz/tryitonline.git"
+    },
+    "bugs": {
+        "url": "https://github.com/apteryxxyz/tryitonline/issues"
+    },
+    "scripts": {
+        "clean": "rm -rf dist",
+        "lint": "eslint src --fix",
+        "format": "prettier . --write",
+        "test": "node test/tio.test",
+        "build": "tsc -p tsconfig.json"
+    },
+    "devDependencies": {
+        "@types/node": "^18.0.0",
+        "apteryx-eslint-config": "^1.0.0",
+        "apteryx-prettier-config": "^1.0.1",
+        "eslint": "^8.18.0",
+        "prettier": "^2.7.1"
+    }
+}

@@ -1,0 +1,8 @@
+node_modules/
+
+dist/
+.env
+
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
