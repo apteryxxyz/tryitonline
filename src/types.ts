@@ -126,15 +126,26 @@ export enum Command {
 export type Example = ExecuteOptions & { expected: string };
 
 export interface Language {
+    /** ID */
     id: string;
+    /** Name */
     name: string;
+    /** Language URL */
     link: string;
+    /** Categories */
     categories: Category[];
+    /** Encoding */
     encoding: Encoding;
+    /** Method of updating */
     update: Update;
+    /** Examples for how to use this language */
     examples: Example[];
+    /** Unmask */
     unmask: Unmask[];
+    /** The language this language piggybacks */
     piggyback?: string;
+    /** Short ID for this language */
     prettify?: string;
+    /** Tab */
     tab?: string;
 }

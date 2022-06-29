@@ -111,22 +111,27 @@ export function stateToByteString(state: StateData): string {
     return resultArray.join('');
 }
 
+/**
+ * Convert a tio.run test object into an example object.
+ * @param lang Language to get the example for
+ * @param test Test object from tio.run
+ */
 export function testToExample(
     lang: string,
-    example: Record<string, any>,
+    test: Record<string, any>,
 ): Optional<Partial<Example>> {
-    const payload = (example.request as any[])
+    const payload = (test.request as any[])
         .map((a) => a.payload)
         .reduce((a, c) => (a = { ...a, ...c }), {});
 
-    const options: Partial<Example> = {};
-    options.language = lang;
-    options.flags = payload['TIO_CFLAGS'];
-    options.options = payload['TIO_OPTIONS'];
-    options.driver = payload['TIO_DRIVER'];
-    options.code = payload['.code.tio'];
-    options.input = payload['.input.tio'];
-    options.args = payload.args;
-    options.expected = example.response;
-    return options;
+    const example: Partial<Example> = {};
+    example.language = lang;
+    example.flags = payload['TIO_CFLAGS'];
+    example.options = payload['TIO_OPTIONS'];
+    example.driver = payload['TIO_DRIVER'];
+    example.code = payload['.code.tio'];
+    example.input = payload['.input.tio'];
+    example.args = payload.args;
+    example.expected = test.response;
+    return example;
 }

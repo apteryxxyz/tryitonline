@@ -19,6 +19,9 @@ const DEFAULT_TIMEOUT = 10000;
 const REFRESH_INTERVAL = 850000;
 let NEXT_REFRESH = 0;
 
+/**
+ * Prepare the languages and run URL.
+ */
 async function prepare(): Promise<void> {
     if (RUN_URL && Date.now() < NEXT_REFRESH) return;
     NEXT_REFRESH = Date.now() + REFRESH_INTERVAL;
@@ -39,6 +42,9 @@ async function prepare(): Promise<void> {
     LANGUAGES_URL = languagesUrl;
 }
 
+/**
+ * Get a list of languages.
+ */
 export async function languages(): Promise<Language[]> {
     if (LANGUAGES.length) return LANGUAGES;
     await prepare();
@@ -64,6 +70,11 @@ export async function languages(): Promise<Language[]> {
     })));
 }
 
+/**
+ * Execute an input.
+ * @param options The options to execute
+ * @param timeout Maximum time to wait for the execution to finish
+ */
 async function execute(
     options: ExecuteOptions,
     timeout: number = DEFAULT_TIMEOUT,
@@ -101,6 +112,11 @@ async function execute(
     return decompress(data).toString();
 }
 
+/**
+ * Evaluate a piece of code in any language.
+ * @param options The options to execute
+ * @param timeout Maximum time to wait for the execution to finish
+ */
 export async function evaluate(
     options: ExecuteOptions,
     timeout: number = DEFAULT_TIMEOUT,
@@ -135,9 +151,11 @@ export async function evaluate(
             throw new TioError(`Option '${k}' must be an array of strings.`);
     }
 
+    // Prepare the constants and languages
     await prepare();
     await languages();
 
+    // Ensure inputted language is valid
     const language = LANGUAGES.find((l) => l.id === options.language);
     if (!language) throw new TioError(`Language ${options.language} could not be found.`);
 
