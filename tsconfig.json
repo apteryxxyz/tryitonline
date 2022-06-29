@@ -25,7 +25,7 @@
         "noEmitHelpers": true,
         "outDir": "./dist",
         "preserveConstEnums": true,
-        "removeComments": true,
+        "removeComments": false,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         // Language and Environment
