@@ -1,6 +1,6 @@
 export type Optional<T> = T | undefined;
 
-export interface ExecuteOptions {
+export interface EvaluateOptions {
     /** Language */
     language: string;
     /** Compiler flags */
@@ -45,7 +45,7 @@ export enum ResultStatus {
 }
 
 export interface PassedResult {
-    /** Execution status */
+    /** Evaluation status */
     status: ResultStatus.Passed;
     /** Language */
     language: Language;
@@ -70,7 +70,7 @@ export interface TimedOutResult {
     warnings: undefined;
 }
 
-export type ExecuteResult = PassedResult | TimedOutResult;
+export type EvaluateResult = PassedResult | TimedOutResult;
 
 export enum Category {
     Practical = 'practical',
@@ -123,7 +123,7 @@ export enum Command {
     V = 'V',
 }
 
-export type Example = ExecuteOptions & { expected: string };
+export type Example = EvaluateOptions & { expected: string };
 
 export interface Language {
     /** ID */

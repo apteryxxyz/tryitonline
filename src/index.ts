@@ -1,5 +1,12 @@
 import { Timeout, TioError, TioHttpError } from './structures';
-import { Example, ExecuteOptions, ExecuteResult, Language, Optional, ResultStatus } from './types';
+import {
+    Example,
+    EvaluateOptions,
+    EvaluateResult,
+    Language,
+    Optional,
+    ResultStatus,
+} from './types';
 import {
     compress,
     decompress,
@@ -76,7 +83,7 @@ export async function languages(): Promise<Language[]> {
  * @param timeout Maximum time to wait for the execution to finish
  */
 async function execute(
-    options: ExecuteOptions,
+    options: EvaluateOptions,
     timeout: number = DEFAULT_TIMEOUT,
 ): Promise<Optional<string>> {
     const controller = new AbortController();
@@ -118,9 +125,9 @@ async function execute(
  * @param timeout Maximum time to wait for the execution to finish
  */
 export async function evaluate(
-    options: ExecuteOptions,
+    options: EvaluateOptions,
     timeout: number = DEFAULT_TIMEOUT,
-): Promise<ExecuteResult> {
+): Promise<EvaluateResult> {
     // Verify that all options that must exist do exist
     const shouldExist = [
         ['language', options.language],
@@ -160,7 +167,7 @@ export async function evaluate(
     if (!language) throw new TioError(`Language ${options.language} could not be found.`);
 
     const result = await execute(options, timeout);
-    const object: Partial<ExecuteResult> = {};
+    const object: Partial<EvaluateResult> = {};
     object.language = language;
     object.status = result ? ResultStatus.Passed : ResultStatus.TimedOut;
 
@@ -175,7 +182,7 @@ export async function evaluate(
         object.warnings = undefined;
     }
 
-    return object as ExecuteResult;
+    return object as EvaluateResult;
 }
 
 export * from './types';

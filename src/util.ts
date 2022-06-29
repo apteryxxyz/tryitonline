@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto';
 import { deflateRawSync, gunzipSync } from 'zlib';
-import type { Example, ExecuteOptions, F, Optional, StateData, V } from './types';
+import type { Example, EvaluateOptions, F, Optional, StateData, V } from './types';
 
 export const SCRIPT_URL_REGEX = /<script src="(\/static\/[0-9a-f]+-frontend\.js)" defer><\/script>/;
 export const RUN_URL_REGEX = /^var runURL = "\/cgi-bin\/static\/([^"]+)";$/m;
@@ -58,21 +58,21 @@ export function createF(value: string): F {
  * Convert a tio.run state object into a options object.
  * @param state State object to convert
  */
-export function stateToOptions(state: StateData): ExecuteOptions {
-    const options: Partial<ExecuteOptions> = {};
+export function stateToOptions(state: StateData): EvaluateOptions {
+    const options: Partial<EvaluateOptions> = {};
     options.language = state.lang.values.at(0);
     options.flags = state['TIO_CFLAGS'].values;
     options.code = state['.code.tio'].value;
     options.input = state['.input.tio'].value;
     options.args = state.args.values;
-    return options as ExecuteOptions;
+    return options as EvaluateOptions;
 }
 
 /**
  * Convert an options object into a tio.run state object.
  * @param options Options object to convert
  */
-export function optionsToState(options: ExecuteOptions): StateData {
+export function optionsToState(options: EvaluateOptions): StateData {
     const state: Partial<StateData> = {};
     state.lang = createV(options.language);
     state['TIO_CFLAGS'] = createV(...(options.flags ?? []));
@@ -116,10 +116,7 @@ export function stateToByteString(state: StateData): string {
  * @param lang Language to get the example for
  * @param test Test object from tio.run
  */
-export function testToExample(
-    lang: string,
-    test: Record<string, any>,
-): Optional<Partial<Example>> {
+export function testToExample(lang: string, test: Record<string, any>): Optional<Partial<Example>> {
     const payload = (test.request as any[])
         .map((a) => a.payload)
         .reduce((a, c) => (a = { ...a, ...c }), {});
