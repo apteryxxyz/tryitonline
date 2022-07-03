@@ -21,7 +21,7 @@ export class Timeout {
 export class TioError extends Error {
     public constructor(message: string) {
         super(message);
-        this.name = `TioError: ${message}`;
+        this.name = 'TioError';
     }
 }
 
