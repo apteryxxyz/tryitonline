@@ -1,5 +1,11 @@
 export type Optional<T> = T | undefined;
 
+export interface Constants {
+    baseUrl?: string;
+    defaultTimeout?: number;
+    refreshInterval?: number;
+}
+
 export interface EvaluateOptions {
     /** Language */
     language: string;

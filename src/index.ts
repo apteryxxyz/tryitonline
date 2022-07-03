@@ -6,6 +6,7 @@ import {
     Language,
     Optional,
     ResultStatus,
+    Constants,
 } from './types';
 import {
     compress,
@@ -19,12 +20,23 @@ import {
     testToExample,
 } from './util';
 
+let BASE_URL = 'https://tio.run';
 let RUN_URL: Optional<string> = undefined;
 let LANGUAGES_URL: Optional<string> = undefined;
 let LANGUAGES: Language[] = [];
-const DEFAULT_TIMEOUT = 10000;
-const REFRESH_INTERVAL = 850000;
+let DEFAULT_TIMEOUT = 10000;
+let REFRESH_INTERVAL = 850000;
 let NEXT_REFRESH = 0;
+
+/**
+ * Set the global constants.
+ * @param options The constants to modify
+ */
+export function constants(options: Constants): void {
+    if (options.baseUrl) BASE_URL = options.baseUrl;
+    if (options.defaultTimeout) DEFAULT_TIMEOUT = options.defaultTimeout;
+    if (options.refreshInterval) REFRESH_INTERVAL = options.refreshInterval;
+}
 
 /**
  * Prepare the languages and run URL.
@@ -34,11 +46,11 @@ async function prepare(): Promise<void> {
     NEXT_REFRESH = Date.now() + REFRESH_INTERVAL;
     const msg = 'An error occurred while scraping tio.run.';
 
-    const homeContent = await fetch('https://tio.run/').then((r) => r.text());
+    const homeContent = await fetch(BASE_URL).then((r) => r.text());
     const scriptUrl = homeContent.match(SCRIPT_URL_REGEX)?.[1];
     if (!scriptUrl) throw new TioError(msg);
 
-    const scriptContent = await fetch(`https://tio.run${scriptUrl}`).then((r) => r.text());
+    const scriptContent = await fetch(`${BASE_URL}${scriptUrl}`).then((r) => r.text());
     const runUrl = scriptContent.match(RUN_URL_REGEX)?.[1];
     if (!runUrl) throw new TioError(msg);
 
@@ -56,7 +68,7 @@ export async function languages(): Promise<Language[]> {
     if (LANGUAGES.length) return LANGUAGES;
     await prepare();
 
-    const baseUrl = 'https://tio.run/static/';
+    const baseUrl = `${BASE_URL}/static`;
     const response = await fetch(baseUrl + LANGUAGES_URL);
     const data = (await response.json()) as { [key: string]: Record<string, any> };
 
@@ -92,7 +104,7 @@ async function execute(
     const string = stateToByteString(state);
     const buffer = compress(string);
 
-    const baseUrl = 'https://tio.run/cgi-bin/static/';
+    const baseUrl = `${BASE_URL}/cgi-bin/static/`;
     const dymamicUrl = `${RUN_URL}/${generateRandomBits(128)}`;
     const response = await fetch(baseUrl + dymamicUrl, {
         method: 'POST',
