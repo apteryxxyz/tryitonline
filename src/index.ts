@@ -81,7 +81,7 @@ export async function languages() {
         piggyback: value['piggyback'],
         prettify: value['prettify'],
         tab: value['tab'],
-    })));
+    }))) as Language[];
 }
 
 /**
@@ -182,3 +182,6 @@ export async function evaluate(options: EvaluateOptions, timeout: number = DEFAU
 
     return object as EvaluateResult;
 }
+
+// Support import default in ESM and TS
+exports.default = exports;
