@@ -1,5 +1,13 @@
 import { Timeout, TioError, TioHttpError } from './structures';
-import { Constants, EvaluateOptions, EvaluateResult, Example, Language, Optional, ResultStatus } from './types';
+import {
+    Constants,
+    EvaluateOptions,
+    EvaluateResult,
+    Example,
+    Language,
+    Optional,
+    ResultStatus,
+} from './types';
 import {
     compress,
     decompress,
@@ -134,7 +142,8 @@ export async function evaluate(options: EvaluateOptions, timeout: number = DEFAU
     for (const [k, v] of [
         ['language', options.language],
         ['code', options.code],
-    ]) if (!v) throw new TioError(`Option '${k}' is required.`);
+    ])
+        if (!v) throw new TioError(`Option '${k}' is required.`);
 
     // Verify that all options that must be a string are strings
     for (const [k, v] of [
@@ -156,12 +165,12 @@ export async function evaluate(options: EvaluateOptions, timeout: number = DEFAU
         if (v.some(i => typeof i !== 'string'))
             throw new TioError(`Option '${k}' must be an array of strings.`);
     }
-    
+
     await prepare();
     await languages();
 
     // Ensure inputted language is valid
-    const language = LANGUAGES.find((l) => l.id === options.language);
+    const language = LANGUAGES.find(l => l.id === options.language);
     if (!language) throw new TioError(`Language ${options.language} could not be found.`);
 
     const result = await execute(options, timeout);
