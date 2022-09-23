@@ -1,19 +1,17 @@
-import type { Optional } from './types';
+import { Optional } from './types';
 
 export class Timeout {
     public readonly promise: Promise<undefined>;
-    private timer: Optional<NodeJS.Timeout> = undefined;
+    private _timer: Optional<NodeJS.Timeout> = undefined;
 
     public constructor(timeout: number) {
-        this.promise = new Promise((fullfill) => {
-            this.timer = setTimeout(() => fullfill(undefined), timeout);
-        });
+        this.promise = new Promise(f => (this._timer = setTimeout(() => f(undefined), timeout)));
     }
 
-    public cancel(): void {
-        if (this.timer) {
-            clearTimeout(this.timer);
-            this.timer = undefined;
+    public cancel() {
+        if (this._timer) {
+            clearTimeout(this._timer);
+            delete this._timer;
         }
     }
 }

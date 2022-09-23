@@ -1,40 +1,12 @@
 {
-    // Mapped from https://www.typescriptlang.org/tsconfig
+    "extends": "ts-config-apteryx",
     "compilerOptions": {
-        // Type Checking
-        "allowUnreachableCode": false,
-        "allowUnusedLabels": false,
-        "exactOptionalPropertyTypes": false,
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitOverride": true,
-        "noImplicitReturns": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "strict": true,
-        "useUnknownInCatchVariables": true,
-        // // Modules
         "module": "commonjs",
         "moduleResolution": "node",
-        "resolveJsonModule": true,
-        // Emit
-        "skipLibCheck": true,
-        "declaration": true,
-        "importHelpers": false,
-        "importsNotUsedAsValues": "error",
-        "newLine": "lf",
-        "noEmitHelpers": false,
         "outDir": "./dist",
-        "preserveConstEnums": true,
-        "removeComments": false,
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        // Language and Environment
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "lib": ["ESNext", "DOM"],
-        "target": "ES2021",
-        "useDefineForClassFields": false
+        "lib": ["esnext", "dom"],
+        "target": "es2015"
     },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "dist"]
+    "exclude": ["./node_modules/", "./dist/", "./**/_*/"],
+    "include": ["./src/**/*.ts"]
 }

@@ -1,18 +1,24 @@
 {
     "name": "tryitonline",
-    "version": "1.0.3",
+    "version": "1.1.0",
+    "license": "MIT",
     "description": "",
     "homepage": "https://github.com/apteryxxyz/tryitonline",
-    "license": "MIT",
-    "main": "dist/index.js",
-    "packageManager": "yarn@3.2.1",
-    "files": [
-        "dist"
-    ],
     "author": {
         "name": "ApteryxXYZ",
-        "url": "https://apteryx.xyz"
+        "url": "https://apteryx.xyz/"
     },
+    "packageManager": "yarn@3.2.1",
+    "main": "./dist/index.js",
+    "exports": {
+        "require": "./dist/index.js",
+        "import": "./dist/index.mjs"
+    },
+    "files": [
+        "dist",
+        "!dist/tsconfig.tsbuildinfo",
+        "!dist/*.js.map"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/apteryxxyz/tryitonline.git"
@@ -21,18 +27,39 @@
         "url": "https://github.com/apteryxxyz/tryitonline/issues"
     },
     "scripts": {
-        "clean": "rm -rf dist",
-        "lint": "eslint src --fix",
-        "format": "prettier . --write",
+        "lint": "eslint {src,bin} --fix",
+        "format": "prettier src bin --write",
         "test": "node test/tio.test",
-        "build": "tsc -p tsconfig.json && gen-esm-wrapper ./dist/index.js ./dist/index.mjs"
+        "build": "tsc && gen-esm-wrapper . ./dist/index.mjs"
     },
     "devDependencies": {
         "@types/node": "^18.0.0",
-        "apteryx-eslint-config": "^1.0.0",
-        "apteryx-prettier-config": "^1.0.1",
-        "eslint": "^8.18.0",
+        "@typescript-eslint/eslint-plugin": "^5.38.0",
+        "@typescript-eslint/parser": "^5.38.0",
+        "eslint": "^8.23.1",
+        "eslint-config-apteryx": "^1.0.4",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.2.1",
         "gen-esm-wrapper": "^1.1.3",
-        "prettier": "^2.7.1"
+        "prettier": "^2.7.1",
+        "prettier-config-apteryx": "^1.0.0",
+        "ts-config-apteryx": "^1.0.0"
+    },
+    "prettier": "prettier-config-apteryx",
+    "eslintConfig": {
+        "plugins": [
+            "prettier"
+        ],
+        "extends": [
+            "plugin:prettier/recommended",
+            "apteryx",
+            "apteryx/typescript"
+        ],
+        "ignorePatterns": [
+            "test/*",
+            "examples/*",
+            "scripts/*",
+            "dist/*"
+        ]
     }
 }

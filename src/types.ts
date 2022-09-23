@@ -1,13 +1,16 @@
 export type Optional<T> = T | undefined;
 
 export interface Constants {
+    /** The TIO url to use */
     baseUrl?: string;
+    /** The default max time to evaluate */
     defaultTimeout?: number;
+    /** How often to reprepare */
     refreshInterval?: number;
 }
 
 export interface EvaluateOptions {
-    /** Language */
+    /** Language ID */
     language: string;
     /** Compiler flags */
     flags?: string[];

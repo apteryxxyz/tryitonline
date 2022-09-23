@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto';
 import { deflateRawSync, gunzipSync } from 'zlib';
-import type { Example, EvaluateOptions, F, Optional, StateData, V } from './types';
+import { EvaluateOptions, Example, F, StateData, V } from './types';
 
 export const SCRIPT_URL_REGEX = /<script src="(\/static\/[0-9a-f]+-frontend\.js)" defer><\/script>/;
 export const RUN_URL_REGEX = /^var runURL = "\/cgi-bin\/static\/([^"]+)";$/m;
@@ -58,7 +58,7 @@ export function createF(value: string): F {
  * Convert a tio.run state object into a options object.
  * @param state State object to convert
  */
-export function stateToOptions(state: StateData): EvaluateOptions {
+export function stateToOptions(state: StateData) {
     const options: Partial<EvaluateOptions> = {};
     options.language = state.lang.values.at(0);
     options.flags = state['TIO_CFLAGS'].values;
@@ -72,7 +72,7 @@ export function stateToOptions(state: StateData): EvaluateOptions {
  * Convert an options object into a tio.run state object.
  * @param options Options object to convert
  */
-export function optionsToState(options: EvaluateOptions): StateData {
+export function optionsToState(options: EvaluateOptions) {
     const state: Partial<StateData> = {};
     state.lang = createV(options.language);
     state['TIO_CFLAGS'] = createV(...(options.flags ?? []));
@@ -88,7 +88,7 @@ export function optionsToState(options: EvaluateOptions): StateData {
  * Convert a tio.run state object into a string that can be sent to tio.run.
  * @param state State object to convert
  */
-export function stateToByteString(state: StateData): string {
+export function stateToByteString(state: StateData) {
     const resultArray = [];
 
     for (const [name, field] of Object.entries<F | V>(state as any)) {
@@ -116,9 +116,9 @@ export function stateToByteString(state: StateData): string {
  * @param lang Language to get the example for
  * @param test Test object from tio.run
  */
-export function testToExample(lang: string, test: Record<string, any>): Optional<Partial<Example>> {
-    const payload = (test.request as any[])
-        .map((a) => a.payload)
+export function testToExample(lang: string, test: Record<string, any>) {
+    const payload = (test['request'] as any[])
+        .map(a => a.payload)
         .reduce((a, c) => (a = { ...a, ...c }), {});
 
     const example: Partial<Example> = {};
@@ -129,6 +129,6 @@ export function testToExample(lang: string, test: Record<string, any>): Optional
     example.code = payload['.code.tio'];
     example.input = payload['.input.tio'];
     example.args = payload.args;
-    example.expected = test.response;
+    example.expected = test['response'];
     return example;
 }
